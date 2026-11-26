@@ -2,7 +2,7 @@
  * Open positions. Add a role to publish it; when empty the Careers page
  * invites general applications instead.
  */
-import { confirmed } from "@/lib/placeholder";
+import { confirmed } from "../lib/placeholder";
 export type Role = {
   slug: string;
   title: string;
@@ -26,7 +26,7 @@ const allRoles: Role[] = [
 /** Published roles. Entries containing a [placeholder] are not published. */
 export const roles = confirmed(allRoles);
 
-/** How Nalimat works. Edit to reflect the team's real practices. */
+/** How NALIMAT works. Edit to reflect the team's real practices. */
 export const workingPrinciples = [
   {
     title: "Ownership from idea to release",
@@ -34,7 +34,7 @@ export const workingPrinciples = [
   },
   {
     title: "Products and client work side by side",
-    body: "The team builds Nalimat's own products and delivers client projects, so skills grow in both directions.",
+    body: "The team builds NALIMAT's own products and delivers client projects, so skills grow in both directions.",
   },
   {
     title: "Clear, written communication",

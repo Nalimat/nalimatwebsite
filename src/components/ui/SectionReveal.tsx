@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect } from "react";
 
 /**
@@ -11,7 +9,7 @@ import { useEffect } from "react";
  * hidden, nothing happens without JavaScript, and visitors who prefer
  * reduced motion see everything immediately.
  *
- * Render once on a page whose sections use `<Section reveal>`.
+ * Mounted once in the Layout (keyed by route); sections opt in with `data-reveal`.
  */
 export function SectionReveal() {
   useEffect(() => {

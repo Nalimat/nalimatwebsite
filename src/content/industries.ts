@@ -1,16 +1,12 @@
 /**
- * Industries Nalimat serves. Keep this list to sectors the company actually
- * works in or is actively pursuing; set `active: false` to hide one.
+ * Who NALIMAT Technology works with (shown as "Who We Work With").
+ *
+ * Source: NALIMAT Technology Website Content & Brand Messaging (section 05).
+ * `needs` lists examples on the Who We Work With page; leave it empty unless
+ * the examples are confirmed. Set `active: false` to hide an entry.
  */
 import type { LucideIcon } from "lucide-react";
-import {
-  Building2,
-  GraduationCap,
-  HeartPulse,
-  Landmark,
-  ShoppingBag,
-  Truck,
-} from "lucide-react";
+import { GraduationCap, ShoppingBag, Store, TrendingUp } from "lucide-react";
 
 export type Industry = {
   slug: string;
@@ -23,51 +19,35 @@ export type Industry = {
 
 const allIndustries: Industry[] = [
   {
-    slug: "retail-ecommerce",
-    name: "Retail and e-commerce",
+    slug: "retail-shops-stores",
+    name: "Retail Shops & Stores",
     icon: ShoppingBag,
-    summary: "Online storefronts, inventory and order systems that keep stock, sales and customers in step.",
-    needs: ["Storefronts and checkout", "Inventory and order management", "Customer loyalty apps"],
+    summary: "Billing tools, websites, digital catalogues and practical business solutions.",
+    needs: [],
     active: true,
   },
   {
-    slug: "healthcare",
-    name: "Healthcare",
-    icon: HeartPulse,
-    summary: "Scheduling, patient communication and records tools designed with privacy and reliability first.",
-    needs: ["Appointment and clinic tools", "Patient portals", "Secure data handling"],
+    slug: "small-businesses",
+    name: "Small Businesses",
+    icon: Store,
+    summary: "Custom websites, applications and digital tools to improve daily operations.",
+    needs: [],
     active: true,
   },
   {
-    slug: "education",
-    name: "Education",
+    slug: "growing-companies",
+    name: "Growing Companies",
+    icon: TrendingUp,
+    summary: "Digital platforms, management tools and custom software to support growth.",
+    needs: [],
+    active: true,
+  },
+  {
+    slug: "schools-educational-institutions",
+    name: "Schools & Educational Institutions",
     icon: GraduationCap,
-    summary: "Learning platforms and administration tools for schools, training providers and edtech teams.",
-    needs: ["Learning management", "Student and staff portals", "Assessment and reporting"],
-    active: true,
-  },
-  {
-    slug: "finance",
-    name: "Finance and fintech",
-    icon: Landmark,
-    summary: "Secure, auditable software for payments, lending, accounting and customer onboarding.",
-    needs: ["Customer onboarding", "Payments and reconciliation", "Reporting and compliance tooling"],
-    active: true,
-  },
-  {
-    slug: "logistics",
-    name: "Logistics and supply chain",
-    icon: Truck,
-    summary: "Tracking, dispatch and warehouse systems that give teams one accurate view of what is moving.",
-    needs: ["Fleet and dispatch tools", "Shipment tracking", "Warehouse workflows"],
-    active: true,
-  },
-  {
-    slug: "real-estate",
-    name: "Real estate and property",
-    icon: Building2,
-    summary: "Listing, leasing and property management software for agencies, developers and facility teams.",
-    needs: ["Listings and lead management", "Tenant and lease portals", "Maintenance requests"],
+    summary: "Student monitoring, digital management and education technology.",
+    needs: [],
     active: true,
   },
 ];

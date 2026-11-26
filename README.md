@@ -1,21 +1,22 @@
-# Nalimat website
+# Nalimat website (Vite + React)
 
-The official website for **Nalimat** ([nalimat.com](https://nalimat.com)): an IT product and IT services company.
-
-Built with Next.js 16 (App Router, Cache Components), React 19, TypeScript, Tailwind CSS v4, Lucide icons and Framer Motion.
+The official website for **Nalimat** ([nalimat.com](https://nalimat.com)), migrated from Next.js to
+Vite 8, React 19, React Router 8, TypeScript, Tailwind CSS v4, Lucide icons and Framer Motion.
+Every route is prerendered to static HTML at build time, so pages, metadata and link previews work
+without JavaScript, and React hydrates them in the browser.
 
 ## Getting started
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
+npm run dev          # http://localhost:5173
 ```
 
 | Script | Purpose |
 | --- | --- |
-| `npm run dev` | Development server |
-| `npm run build` | Production build (all pages are prerendered), then a check that no placeholder reached a page |
-| `npm start` | Serve the production build |
+| `npm run dev` | Development server (includes `/api/contact`) |
+| `npm run build` | Client build, SSR build, prerender of every route, then the placeholder check |
+| `npm run preview` | Serve the production build locally (http://localhost:4173), with `/api/contact` and Vercel-style 404s |
 | `npm run lint` / `npm run typecheck` | Code quality checks |
 | `npm run check:placeholders` | List content that still needs real company information |
 
@@ -44,42 +45,61 @@ fails if any bracketed placeholder reaches a generated page. Do not publish stat
 or certifications that cannot be verified.
 
 **Insights and Careers** stay reachable from the footer and sitemap, and join the header navigation automatically
-once there is at least one published article or open role.
+once there is at least one published article or open role. New articles are prerendered and added to the sitemap
+automatically.
 
-**Logo:** the monogram in `src/components/layout/Logo.tsx`, `src/app/icon.svg` and
-`src/app/opengraph-image.tsx` is a stand-in. Replace it with the official logo files.
+**Logo:** the monogram in `src/components/layout/Logo.tsx`, `public/icon.svg` and the social image
+`public/og-image.png` (1200×630) is a stand-in. Replace them with the official logo files.
+
+## How it fits together
+
+```
+index.html               HTML shell: static head tags, Organization JSON-LD, #root
+src/
+  entry-client.tsx       Hydrates prerendered pages (BrowserRouter)
+  entry-server.tsx       Renders a URL to HTML at build time (StaticRouter)
+  App.tsx                Routes (formerly the src/app directory)
+  routes.ts              Prerendered URLs and sitemap data
+  pages/                 One component per route, each with its <Seo> metadata
+  components/layout/     Layout, Navbar, Footer, SectionNav, Seo, ScrollManager, ErrorBoundary
+  lib/seo.ts             Metadata (same tags the Next.js Metadata API produced)
+  lib/contact-client.ts  Posts the contact form to /api/contact
+server/contact.ts        Contact validation + webhook delivery (server only)
+api/contact.ts           Vercel Function: POST /api/contact
+scripts/prerender.mjs    Writes dist/<route>.html, 404.html, sitemap.xml, robots.txt
+public/                  icon.svg, og-image.png (social sharing image)
+vercel.json              Vercel build settings, clean URLs, asset caching
+```
 
 ## Contact form
 
-The form validates on the client and again on the server (`src/lib/contact.ts`, `src/app/contact/actions.ts`).
-There is no database. Enquiries are sent as JSON to `CONTACT_WEBHOOK_URL` (see `.env.example`), which can be an
-email service, CRM, Slack, Zapier, Make or n8n endpoint.
+The form validates in the browser and again on the server (`src/lib/contact.ts`, shared by both).
+Enquiries are sent as JSON to `CONTACT_WEBHOOK_URL`. The variable is read only by server code
+(`server/contact.ts`); it has no `VITE_` prefix, so Vite never puts it in the browser bundle.
 
-- **Development:** without the variable, enquiries are printed to the server console.
-- **Production:** the variable is required. Without it, visitors see an error asking them to email you
-  directly, so enquiries are never silently lost.
+- **Development (`npm run dev`):** without the variable, enquiries are printed to the terminal.
+  To test delivery locally, put `CONTACT_WEBHOOK_URL=...` in `.env.local` (git-ignored).
+- **Production:** the variable is required. Without it, visitors see an error asking them to email
+  you directly, so enquiries are never silently lost.
 
-The form includes a honeypot field against basic spam bots.
+## Deployment (Vercel)
 
-## Project structure
-
-```
-src/
-  app/            routes, metadata, sitemap.ts, robots.ts, OG image, error/404/loading states
-  components/
-    layout/       Navbar, Footer, Logo, MotionProvider
-    ui/           Button, Container, Section, Card, Badge, EmptyState
-    sections/     Page sections (hero, product cards, service list, CTA...)
-    contact/      Contact form
-  content/        Editable company content
-  lib/            Helpers (SEO metadata, validation, formatting)
-```
-
-## Deployment
-
-Any Node.js host that supports Next.js works (Vercel, Netlify, AWS Amplify, a Node server or Docker).
-
-1. Set `CONTACT_WEBHOOK_URL` in the host's environment variables.
-2. `npm run build && npm start`, or connect the repository to Vercel.
-3. Point `nalimat.com` at the deployment. The canonical URL is set in `src/content/site.ts`.
+1. Import the repository in Vercel (Root Directory: the repository root). Vercel reads `vercel.json`
+   (framework Vite, `npm run build`, output `dist`) and deploys `api/contact.ts` as a function.
+2. Add `CONTACT_WEBHOOK_URL` under **Settings > Environment Variables** (Production and Preview).
+3. Deploy, then add `nalimat.com` (and `www.nalimat.com`, redirected to the apex) under
+   **Settings > Domains** and set the DNS records Vercel shows at your domain registrar.
 4. Submit `https://nalimat.com/sitemap.xml` in Google Search Console.
+
+Unknown URLs are served `404.html` with a real 404 status. `/about/` redirects to `/about`.
+
+### Other static hosts
+
+`dist/` is plain static files plus one serverless endpoint. On another host, serve `dist/` with
+"clean URLs" (`/about` -> `about.html`), use `404.html` as the not-found page, and run
+`server/contact.ts`'s `handleContactRequest` as a function at `/api/contact`.
+
+## Previous Next.js version
+
+The original Next.js implementation is preserved at the Git tag `nextjs-final` (commit `60857a0`):
+`git checkout nextjs-final` to inspect it, or `git switch -c nextjs-restore nextjs-final` to work from it.

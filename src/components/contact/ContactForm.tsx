@@ -1,9 +1,7 @@
-"use client";
-
 import { useActionState, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "react-router";
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
-import { submitContact, type ContactState } from "@/app/contact/actions";
+import { submitContact, type ContactState } from "@/lib/contact-client";
 import {
   enquiryTopics,
   limits,
@@ -18,14 +16,14 @@ import { cn } from "@/lib/cn";
 const fieldOrder: (keyof ContactInput)[] = ["name", "email", "company", "phone", "topic", "message", "consent"];
 
 const inputClass =
-  "block w-full rounded-control border bg-surface px-4 py-3 text-base text-navy placeholder:text-muted/70 transition-colors focus:border-navy focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent";
+  "block w-full rounded-control border bg-surface px-4 py-3 text-base text-navy placeholder:text-muted/70 transition-colors focus:border-navy focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent-strong";
 
 function initialTopic(param: string | null): string {
   return enquiryTopics.some((t) => t.value === param) ? (param as string) : "project";
 }
 
 export function ContactForm() {
-  const params = useSearchParams();
+  const [params] = useSearchParams();
   const [state, formAction, pending] = useActionState<ContactState, FormData>(submitContact, { status: "idle" });
 
   const [values, setValues] = useState<ContactInput>({
@@ -131,7 +129,7 @@ export function ContactForm() {
       )}
 
       <div className="grid gap-6 sm:grid-cols-2">
-        <Field id="name" label="Full name" required error={fieldError("name")}>
+        <Field id="name" label="Name" required error={fieldError("name")}>
           <input
             id="name"
             name="name"
@@ -148,7 +146,7 @@ export function ContactForm() {
           />
         </Field>
 
-        <Field id="email" label="Work email" required error={fieldError("email")}>
+        <Field id="email" label="Email" required error={fieldError("email")}>
           <input
             id="email"
             name="email"
@@ -166,7 +164,7 @@ export function ContactForm() {
           />
         </Field>
 
-        <Field id="company" label="Company" error={fieldError("company")}>
+        <Field id="company" label="Business or organization" error={fieldError("company")}>
           <input
             id="company"
             name="company"
@@ -211,7 +209,7 @@ export function ContactForm() {
             className={cn(inputClass, "appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-10", fieldError("topic") ? "border-accent" : "border-line")}
             style={{
               backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2352637A' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23657080' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
             }}
           >
             {enquiryTopics.map((t) => (
@@ -224,7 +222,7 @@ export function ContactForm() {
 
         <Field
           id="message"
-          label="How can we help?"
+          label="Project description"
           required
           error={fieldError("message")}
           hint="Share your goals, timeline and any systems involved. The more context, the better our reply."
@@ -264,7 +262,7 @@ export function ContactForm() {
               className="mt-1 h-4 w-4 shrink-0 accent-[#C84B12]"
             />
             <span className="text-muted">
-              I agree that Nalimat may use these details to respond to my enquiry.
+              I agree that NALIMAT Technology may use these details to respond to my enquiry.
             </span>
           </label>
           {fieldError("consent") && (
@@ -286,7 +284,7 @@ export function ContactForm() {
   );
 }
 
-function prefillMessage(params: URLSearchParams | ReturnType<typeof useSearchParams>) {
+function prefillMessage(params: URLSearchParams) {
   const product = params.get("product");
   const role = params.get("role");
   const match = products.find((p) => p.slug === product);

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AppLink as Link } from "@/components/ui/AppLink";
 import { cn } from "@/lib/cn";
 
 /**
@@ -20,7 +20,7 @@ export function Logo({ tone = "dark", className }: { tone?: "dark" | "light"; cl
   return (
     <Link
       href="/"
-      aria-label="Nalimat home"
+      aria-label="NALIMAT Technology home"
       className={cn(
         "inline-flex items-center gap-2.5 text-[1.3125rem] font-semibold tracking-[-0.03em]",
         tone === "dark" ? "text-navy" : "text-white",

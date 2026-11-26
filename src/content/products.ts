@@ -1,66 +1,86 @@
 /**
- * Software products built and owned by Nalimat.
+ * Software products built by NALIMAT Technology.
  *
- * Replace each [placeholder] with the real product. A product that still
- * contains any [placeholder] is treated as unconfirmed and hidden from every
- * page; it appears automatically once all of its fields are filled in.
- * Set `featured: true` to show a product on the homepage (up to 3 look best).
+ * Source: NALIMAT Technology Website Content & Brand Messaging (section 04).
+ * The document notes that product features are content suggestions: confirm
+ * features and status before changing a product to "Available".
+ *
+ * A product that still contains any [placeholder] is treated as unconfirmed
+ * and hidden from every page. Set `featured: true` to show it on the homepage.
  */
-import { confirmed } from "@/lib/placeholder";
+import { confirmed } from "../lib/placeholder";
 
-export type ProductStatus = "Available" | "In beta" | "In development";
+/**
+ * "Available" products get a "Request a demo" button. Products that are still
+ * being built only invite questions, so nothing is presented as available.
+ */
+export type ProductStatus = "Available" | "Currently developing" | "Upcoming project";
 
 export type Product = {
   slug: string;
   name: string;
   category: string;
+  /** Short line under the product name. */
+  tagline: string;
+  /** One line used on homepage cards. */
   summary: string;
   description: string;
   audience: string;
+  /** Heading for the feature list, e.g. "Key features" or "Potential features". */
+  featuresLabel: string;
   capabilities: string[];
+  /** Closing product statement. */
+  statement: string;
   status: ProductStatus;
-  /** External product site or demo link. Leave empty to show "Request a demo". */
+  /** External product site or demo link. Leave empty when there is none. */
   url: string;
   featured: boolean;
 };
 
 const allProducts: Product[] = [
   {
-    slug: "product-one",
-    name: "[Product one name]",
-    category: "[Product category, e.g. Operations platform]",
-    summary: "[One-sentence summary of what the product does for its user.]",
+    slug: "invoicy",
+    name: "Invoicy",
+    category: "Quotation & Invoice Management",
+    tagline: "Simplify your business billing.",
+    summary: "Simplify your business billing.",
     description:
-      "[Two or three sentences describing the problem this product solves, who uses it day to day, and how it fits into their work.]",
-    audience: "[Who it is for, e.g. Operations teams in mid-sized companies]",
-    capabilities: ["[Key capability]", "[Key capability]", "[Key capability]", "[Key capability]"],
-    status: "Available",
+      "Invoicy is a quotation and invoice management application designed for small businesses, shop owners, freelancers and service providers. Create professional quotations, generate invoices, manage customer details and organize your billing workflow in one convenient application.",
+    audience: "Small businesses, shop owners, freelancers and service providers",
+    featuresLabel: "Key features",
+    capabilities: [
+      "Create professional quotations",
+      "Generate tax invoices",
+      "Manage customer and business details",
+      "Track quotation and invoice statuses",
+      "Generate business-ready documents",
+      "Letterhead-based document formats",
+    ],
+    statement: "A smarter way to manage your business paperwork.",
+    status: "Currently developing",
     url: "",
     featured: true,
   },
   {
-    slug: "product-two",
-    name: "[Product two name]",
-    category: "[Product category]",
-    summary: "[One-sentence summary of what the product does for its user.]",
+    slug: "studata",
+    name: "Studata",
+    category: "Student Monitoring & Management",
+    tagline: "A better way to monitor student progress.",
+    summary: "A better way to monitor student progress.",
     description:
-      "[Two or three sentences describing the problem this product solves, who uses it day to day, and how it fits into their work.]",
-    audience: "[Who it is for]",
-    capabilities: ["[Key capability]", "[Key capability]", "[Key capability]"],
-    status: "In beta",
-    url: "",
-    featured: true,
-  },
-  {
-    slug: "product-three",
-    name: "[Product three name]",
-    category: "[Product category]",
-    summary: "[One-sentence summary of what the product does for its user.]",
-    description:
-      "[Two or three sentences describing the problem this product solves, who uses it day to day, and how it fits into their work.]",
-    audience: "[Who it is for]",
-    capabilities: ["[Key capability]", "[Key capability]", "[Key capability]"],
-    status: "In development",
+      "Studata is an upcoming digital platform designed to help educational institutions monitor, manage and organize student information, activities and progress through a centralized system.",
+    audience: "Educational institutions",
+    featuresLabel: "Potential features",
+    capabilities: [
+      "Student profile management",
+      "Attendance tracking",
+      "Academic progress monitoring",
+      "Student activity tracking",
+      "Reports and analytics",
+      "Parent, teacher and institution communication",
+    ],
+    statement: "Designed to bring student information and monitoring together.",
+    status: "Upcoming project",
     url: "",
     featured: true,
   },

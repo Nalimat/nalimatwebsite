@@ -1,0 +1,477 @@
+@import "tailwindcss";
+
+/*
+ * Nalimat design tokens: modern retro palette.
+ * Deep Navy, Retro Orange, Vintage Cream, Retro Sage, Warm White, White,
+ * Soft Border and Muted Text come from the brand palette. The remaining
+ * shades are derived from them only where WCAG AA requires it:
+ * - accent-strong / accent-ink: darker Retro Orange for filled buttons,
+ *   small orange text and focus rings (#F06020 is 3.3:1 on white, so it is
+ *   kept for indicators, highlights and large graphic accents).
+ * - muted-on-cream: Muted Text darkened just enough for 4.5:1 on cream
+ *   (applied automatically by the `surface-cream` utility below).
+ * - on-navy: warm light text for navy panels (10.6:1).
+ * - navy-800/700: navy tints for dark-panel detailing.
+ */
+@theme {
+  --color-navy: #10243a; /* Deep Navy */
+  --color-navy-800: #1a3350;
+  --color-navy-700: #284563;
+  --color-accent: #f06020; /* Retro Orange */
+  --color-accent-strong: #c84b12; /* filled buttons and focus rings: 4.7:1 with white */
+  --color-accent-ink: #a63d0e; /* small orange text: 6.1:1 on warm white, 5.2:1 on cream */
+  --color-sage: #75856b; /* Retro Sage: icons and small marks only (not text) */
+  --color-canvas: #fcfaf5; /* Warm White: page background */
+  --color-surface: #ffffff; /* White: cards and content surfaces */
+  --color-cream: #f2e8d5; /* Vintage Cream: selected section backgrounds */
+  --color-line: #e3d9c8; /* Soft Border */
+  --color-muted: #657080; /* Muted Text: 4.8:1 on warm white, 5.0:1 on white */
+  --color-muted-on-cream: #5e6877; /* 4.6:1 on cream */
+  --color-on-navy: #ddd3c2;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(2.6rem, 1.5rem + 3.7vw, 4.4rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.04em;
+  --text-h1: clamp(2.125rem, 1.6rem + 2vw, 3.25rem);
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h2: clamp(1.875rem, 1.35rem + 1.8vw, 2.875rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.03em;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.012em;
+  --text-lead: 1.1875rem;
+  --text-lead--line-height: 1.6;
+
+  --radius-panel: 1.25rem;
+  --radius-stage: 1.75rem;
+  --radius-control: 0.625rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchored and focused content clear of the 72px sticky header. */
+    scroll-padding-top: 96px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-navy);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-navy); /* 4.8:1 (white on Retro Orange is only 3.3:1) */
+  }
+
+  :focus-visible {
+    /* Darker Retro Orange: at least 3:1 on warm white, white, cream and navy. */
+    outline: 2px solid var(--color-accent-strong);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    font-weight: 600;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/*
+ * Vintage Cream surface. Muted text inside it switches to the darker
+ * muted-on-cream shade so secondary text keeps WCAG AA contrast.
+ */
+@utility surface-cream {
+  background-color: var(--color-cream);
+  --color-muted: var(--color-muted-on-cream);
+}
+
+/*
+ * Dark stage: navy surfaces (header, hero, page headers, product showcase,
+ * CTA, footer). Focus rings switch to Retro Orange, which keeps at least
+ * 3.9:1 on navy and navy-800 (the darker AA orange would drop below 3:1).
+ */
+@utility stage-dark {
+  & :focus-visible {
+    outline-color: var(--color-accent);
+  }
+}
+
+/* Faint retro-futurist grid used behind navy stages. Decorative only. */
+@utility grid-lines {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility grid-lines-light {
+  background-image:
+    linear-gradient(to right, rgb(16 36 58 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(16 36 58 / 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Monospace eyebrow label above section headings. */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78125rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/*
+ * Ambient motion for illustrations: slow floating layers and flowing
+ * connector lines. Transform/opacity/dash only; all of it stops for
+ * visitors who prefer reduced motion.
+ */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.anim-float {
+  animation: float-y 7s ease-in-out infinite;
+  transform-box: fill-box;
+}
+
+.anim-float-slow {
+  animation: float-y 9.5s ease-in-out infinite;
+  animation-delay: -3s;
+  transform-box: fill-box;
+}
+
+.anim-float-late {
+  animation: float-y 8.2s ease-in-out infinite;
+  animation-delay: -5.5s;
+  transform-box: fill-box;
+}
+
+.anim-dash {
+  stroke-dasharray: 3 9;
+  animation: dash-flow 2.8s linear infinite;
+}
+
+.anim-glow {
+  animation: glow-pulse 6s ease-in-out infinite;
+}
+
+/*
+ * One-time section reveal (see components/ui/SectionReveal.tsx): content
+ * below the fold fades in and rises 18px the first time it enters the
+ * viewport. Nothing is hidden without JavaScript or with reduced motion.
+ */
+[data-reveal="pending"] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Process timeline connector draws in when its section is revealed. */
+.timeline-line {
+  transform-origin: left center;
+}
+
+[data-reveal="pending"] .timeline-line {
+  transform: scaleX(0);
+}
+
+[data-reveal="shown"] .timeline-line {
+  transform: scaleX(1);
+  transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) 250ms;
+}
+
+/*
+ * Staggered children: inside a revealed section, items of a `.reveal-stagger`
+ * list rise in one after another instead of all at once.
+ */
+[data-reveal="pending"] .reveal-stagger > * {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(0.985);
+}
+
+[data-reveal="shown"] .reveal-stagger > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal="shown"] .reveal-stagger > :nth-child(2) { transition-delay: 90ms; }
+[data-reveal="shown"] .reveal-stagger > :nth-child(3) { transition-delay: 180ms; }
+[data-reveal="shown"] .reveal-stagger > :nth-child(4) { transition-delay: 270ms; }
+[data-reveal="shown"] .reveal-stagger > :nth-child(5) { transition-delay: 360ms; }
+[data-reveal="shown"] .reveal-stagger > :nth-child(6) { transition-delay: 450ms; }
+[data-reveal="shown"] .reveal-stagger > :nth-child(n + 7) { transition-delay: 520ms; }
+
+/*
+ * Cursor spotlight on cards: a soft glow follows the pointer (position set
+ * by the delegated listener in Layout.tsx). Painted behind the card content.
+ */
+.spotlight {
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease;
+  background: radial-gradient(
+    520px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(240 96 32 / 0.11),
+    transparent 42%
+  );
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+.spotlight-dark::before {
+  background: radial-gradient(
+    560px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(240 96 32 / 0.2),
+    transparent 45%
+  );
+}
+
+/* Button sheen: a soft band of light sweeps across on hover. */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-sheen:hover::after {
+  transform: translateX(120%);
+}
+
+/* Travelling light around a panel border (CTA). */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes border-spin {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+.glow-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 0deg 250deg,
+    rgb(240 96 32 / 0.95) 300deg,
+    rgb(242 232 213 / 0.7) 320deg,
+    transparent 340deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-spin 9s linear infinite;
+}
+
+/* Hero aurora: slow drifting colour fields behind the navy hero. */
+@keyframes aurora-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-6%, 8%, 0) scale(1.12);
+  }
+}
+
+@keyframes aurora-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(8%, -6%, 0) scale(0.95);
+  }
+}
+
+.aurora-a {
+  animation: aurora-a 18s ease-in-out infinite;
+}
+
+.aurora-b {
+  animation: aurora-b 22s ease-in-out infinite;
+}
+
+/* Light pulses travelling along SVG connector paths (CSS motion path). */
+@keyframes travel {
+  from {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  to {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.anim-travel {
+  offset-rotate: 0deg;
+  animation: travel 3.4s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+
+@keyframes orbit {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.anim-orbit {
+  offset-rotate: 0deg;
+  animation: orbit 26s linear infinite;
+}
+
+/* Brand ticker. */
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.anim-marquee {
+  animation: marquee 48s linear infinite;
+}
+
+.anim-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal] .timeline-line,
+  [data-reveal] .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .anim-float,
+  .anim-float-slow,
+  .anim-float-late,
+  .anim-dash,
+  .anim-glow,
+  .anim-travel,
+  .anim-orbit,
+  .anim-marquee,
+  .aurora-a,
+  .aurora-b,
+  .glow-border::after {
+    animation: none !important;
+  }
+
+  .anim-travel {
+    opacity: 0;
+  }
+
+  /* Word-by-word headings: every word shown in place. */
+  .split-word {
+    transform: none !important;
+  }
+
+  .btn-sheen::after {
+    display: none;
+  }
+}
+
+/* Larger, softer spotlight for the hero. */
+.spotlight-hero::before {
+  z-index: -15;
+  opacity: 1;
+  background: radial-gradient(
+    640px circle at var(--mx, 70%) var(--my, 40%),
+    rgb(240 96 32 / 0.13),
+    transparent 55%
+  );
+}

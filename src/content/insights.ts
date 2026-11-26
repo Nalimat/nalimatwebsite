@@ -6,7 +6,7 @@
  * When the list is empty the Insights page shows a "first articles coming"
  * state rather than fake posts.
  */
-import { confirmed } from "@/lib/placeholder";
+import { confirmed } from "../lib/placeholder";
 export type Insight = {
   slug: string;
   title: string;

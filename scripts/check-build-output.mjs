@@ -3,9 +3,9 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
-const root = ".next/server/app";
+const root = "dist";
 if (!existsSync(root)) {
-  console.error(`check-build-output: ${root} not found. Run "next build" first.`);
+  console.error(`check-build-output: ${root} not found. Run "npm run build" first.`);
   process.exit(1);
 }
 

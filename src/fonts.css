@@ -1,0 +1,10 @@
+/*
+ * Self-hosted Inter (variable, all weights), replacing next/font/google.
+ * Only the subsets a page actually uses are downloaded (unicode-range).
+ * Exposes the same --font-inter variable that globals.css reads.
+ */
+@import "@fontsource-variable/inter";
+
+:root {
+  --font-inter: "Inter Variable";
+}

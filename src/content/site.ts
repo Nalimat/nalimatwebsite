@@ -7,16 +7,14 @@
  * Run `npm run check:placeholders` to list every remaining placeholder.
  * Placeholder values are never shown on the website; they are hidden instead.
  */
-import { confirmedValue } from "@/lib/placeholder";
-import { insights } from "./insights";
-import { roles } from "./careers";
+import { confirmedValue } from "../lib/placeholder";
 
 export const site = {
-  name: "Nalimat",
+  name: "NALIMAT Technology",
   url: "https://nalimat.com",
-  tagline: "Building Technology for a Smarter Business Future.",
+  tagline: "Technology that simplifies business.",
   description:
-    "Nalimat builds digital products and delivers technology solutions that help businesses simplify operations, innovate, and grow.",
+    "We help small businesses, shops and growing companies simplify their operations through thoughtfully designed websites, applications and digital solutions.",
   locale: "en_US",
 
   contact: {
@@ -52,24 +50,23 @@ export const contactDetails = {
 export type NavItem = { label: string; href: string };
 
 /**
- * Header navigation. Insights and Careers join the header once they have
- * published articles or open roles; until then they stay reachable from the
- * footer and sitemap without being promoted as fully populated sections.
+ * Header navigation, as set in the brand content document:
+ * Home | About | Services | Products | Contact. Contact is the header's
+ * "Contact us" button (and the last item of the mobile menu). Who we work
+ * with, Insights and Careers stay reachable from the footer and sitemap.
  */
 export const mainNav: NavItem[] = [
-  { label: "Products", href: "/products" },
-  { label: "Services", href: "/services" },
-  { label: "Industries", href: "/industries" },
+  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  ...(insights.length > 0 ? [{ label: "Insights", href: "/insights" }] : []),
-  ...(roles.length > 0 ? [{ label: "Careers", href: "/careers" }] : []),
+  { label: "Services", href: "/services" },
+  { label: "Products", href: "/products" },
 ];
 
 export const footerNav: { title: string; links: NavItem[] }[] = [
   {
     title: "Company",
     links: [
-      { label: "About Nalimat", href: "/about" },
+      { label: "About NALIMAT", href: "/about" },
       { label: "Careers", href: "/careers" },
       { label: "Insights", href: "/insights" },
       { label: "Contact", href: "/contact" },
@@ -80,8 +77,8 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
     links: [
       { label: "Products", href: "/products" },
       { label: "Services", href: "/services" },
-      { label: "Industries", href: "/industries" },
-      { label: "Start a project", href: "/contact?topic=project" },
+      { label: "Who we work with", href: "/industries" },
+      { label: "Start a Project", href: "/contact?topic=project" },
     ],
   },
 ];

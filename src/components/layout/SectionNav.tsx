@@ -1,6 +1,5 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { ButtonLink } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 
@@ -16,8 +15,8 @@ type Cta = { label: string; href: string };
  *    inset, light shadow) fades in at the top of the viewport and stays
  *    pinned while the sections scroll underneath it.
  *
- * Nothing changes size or position while scrolling: the floating bar only
- * fades (opacity), and not at all for visitors who prefer reduced motion.
+ * The floating bar fades in and eases down 8px; the active underline slides
+ * between links. Neither moves for visitors who prefer reduced motion.
  * Links are plain #anchors, so scrolling stays browser-native; smooth
  * scrolling and the offset that keeps headings clear of the bar come from
  * `scroll-behavior` and `scroll-padding-top` in globals.css.
@@ -81,7 +80,7 @@ export function SectionNav({
       {/* In-page bar: scrolls with the page. */}
       <nav ref={inlineRef} aria-label="Sections on this page" className="border-t border-line bg-surface">
         <div className="mx-auto flex h-14 max-w-[1200px] items-center gap-4 px-5 sm:px-8">
-          <SectionLinks sections={sections} active={active} />
+          <SectionLinks sections={sections} active={active} indicatorId="section-active-inline" />
           <CtaButton cta={cta} />
         </div>
       </nav>
@@ -89,8 +88,8 @@ export function SectionNav({
       {/* Floating bar: pinned to the top once the in-page bar has gone. */}
       <div
         className={cn(
-          "pointer-events-none fixed inset-x-0 top-3 z-40 px-3 transition-[opacity,visibility] duration-200 ease-out motion-reduce:transition-none sm:px-8",
-          pinned ? "visible opacity-100" : "invisible opacity-0",
+          "pointer-events-none fixed inset-x-0 top-3 z-40 px-3 transition-[opacity,visibility,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transform-none motion-reduce:transition-none sm:px-8",
+          pinned ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0",
         )}
       >
         <nav
@@ -99,7 +98,7 @@ export function SectionNav({
           className="pointer-events-auto mx-auto max-w-[1136px] rounded-[0.875rem] border border-line bg-surface shadow-[0_6px_24px_-12px_rgba(16,36,58,0.25)]"
         >
           <div className="flex h-14 items-center gap-4 px-2 sm:px-3">
-            <SectionLinks sections={sections} active={active} listRef={floatingListRef} />
+            <SectionLinks sections={sections} active={active} listRef={floatingListRef} indicatorId="section-active-floating" />
             <CtaButton cta={cta} />
           </div>
         </nav>
@@ -112,10 +111,13 @@ function SectionLinks({
   sections,
   active,
   listRef,
+  indicatorId,
 }: {
   sections: SectionLink[];
   active: string | null;
   listRef?: React.Ref<HTMLUListElement>;
+  /** Shared layout id so the active underline slides between links. */
+  indicatorId: string;
 }) {
   return (
     <ul
@@ -135,7 +137,14 @@ function SectionLinks({
               )}
             >
               {s.label}
-              {isActive && <span aria-hidden className="absolute inset-x-3 bottom-0.5 h-0.5 rounded-full bg-accent" />}
+              {isActive && (
+                <motion.span
+                  layoutId={indicatorId}
+                  aria-hidden
+                  className="absolute inset-x-3 bottom-0.5 h-0.5 rounded-full bg-accent"
+                  transition={{ type: "spring", stiffness: 420, damping: 38 }}
+                />
+              )}
             </a>
           </li>
         );

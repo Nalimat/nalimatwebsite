@@ -1,19 +1,23 @@
 /**
- * About page content. Story paragraphs and leadership entries containing a
- * [placeholder] are hidden until confirmed. Add company facts (such as the
- * founding year or headquarters) to `facts` only once they are verified.
+ * About page content.
+ *
+ * Story, mission, vision and facts come from NALIMAT Technology Website
+ * Content & Brand Messaging (section 02 and the brand positioning table).
+ * Story paragraphs and leadership entries containing a [placeholder] are
+ * hidden until confirmed. Add facts (such as the founding year or
+ * headquarters) only once they are verified.
  */
-import { confirmed } from "@/lib/placeholder";
+import { confirmed } from "../lib/placeholder";
 
 export const about = {
   story: confirmed([
-    "Nalimat is a technology company that builds its own software products and delivers technology services to businesses.",
-    "We work on both sides of software: as product owners who live with what we ship, and as a delivery partner for companies that need systems built around their own processes. Each side makes us better at the other.",
-    "[Add the company story here: when and why Nalimat was founded, where the team is based, and the moments that shaped how the company works today.]",
+    "NALIMAT Technology is a technology-driven company focused on creating digital solutions that help businesses, entrepreneurs and institutions work smarter.",
+    "From building websites and mobile applications to developing our own software products, we combine technology, design and innovation to solve real-world challenges. Our goal is to make technology accessible, efficient and meaningful for businesses of every size.",
   ]),
   mission:
-    "To build dependable technology that helps businesses simplify operations, innovate and grow.",
-  vision: "A future where every business, whatever its size, can use software that truly fits the way it works.",
+    "To simplify everyday business and organizational operations through accessible, reliable and user-friendly technology.",
+  vision:
+    "To become a trusted technology partner for businesses and institutions by building innovative digital products that make everyday work easier.",
   values: [
     { title: "Clarity", body: "Plain language, written decisions and honest estimates." },
     { title: "Craft", body: "Careful design and engineering that holds up over years, not weeks." },
@@ -21,7 +25,11 @@ export const about = {
     { title: "Partnership", body: "Your goals set the priorities; we bring the expertise to reach them." },
   ],
   facts: [
-    { label: "Focus", value: "Products and IT services" },
+    { label: "Industry", value: "Software & Digital Solutions" },
+    { label: "Core services", value: "Websites, mobile applications, custom software & UI/UX" },
+    { label: "Audience", value: "Small businesses, shops, startups, companies & educational institutions" },
+    { label: "Current product", value: "Invoicy" },
+    { label: "Upcoming product", value: "Studata" },
   ],
   /** Add team members once approved for publication. */
   leadership: confirmed([] as { name: string; role: string }[]),

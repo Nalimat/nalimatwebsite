@@ -5,7 +5,7 @@
  * While this array is empty, the homepage shows an honest "case studies coming
  * soon" panel instead of the section grid.
  */
-import { confirmed } from "@/lib/placeholder";
+import { confirmed } from "../lib/placeholder";
 export type CaseStudy = {
   slug: string;
   client: string;
