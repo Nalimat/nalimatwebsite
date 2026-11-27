@@ -7,6 +7,7 @@ import { Footer } from "./Footer";
 import { ScrollManager } from "./ScrollManager";
 import { ScrollProgress } from "./ScrollProgress";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { Analytics } from "./Analytics";
 import { SectionReveal } from "@/components/ui/SectionReveal";
 
 /**
@@ -52,6 +53,7 @@ export function Layout() {
         Skip to content
       </a>
       <ScrollManager />
+      <Analytics />
       <MotionProvider>
         <ScrollProgress />
         <Navbar />

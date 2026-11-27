@@ -8,13 +8,13 @@ import { site } from "@/content/site";
 import { services } from "@/content/services";
 import { HeroVisual } from "./HeroVisual";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
-/** Staggered entrance for the hero's supporting elements. */
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 18 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, delay, ease },
+/**
+ * Staggered entrance for the hero's supporting elements, in CSS (globals.css)
+ * so it plays from the prerendered HTML at first paint, not after hydration.
+ */
+const rise = (delay: number, className = "", kind: "enter-rise" | "enter-slide" = "enter-rise") => ({
+  className: `${kind} ${className}`.trim(),
+  style: { animationDelay: `${delay}s` },
 });
 
 /**
@@ -50,27 +50,25 @@ export function Hero() {
 
       <Container className="grid items-center gap-12 pt-14 pb-16 sm:pt-20 lg:grid-cols-12 lg:gap-8 lg:pt-20 lg:pb-24">
         <motion.div className="lg:col-span-6" style={{ opacity: textOpacity }}>
-          <motion.div {...rise(0)}>
+          <div {...rise(0)}>
             <Eyebrow tone="dark">Software &amp; Digital Solutions</Eyebrow>
-          </motion.div>
+          </div>
           <h1 id="hero-title" className="mt-6 text-display">
             <SplitReveal text="Technology Built for the Way You Work." mode="mount" delay={0.1} stagger={0.07} />
           </h1>
-          <motion.p className="mt-7 max-w-[34rem] text-lead text-on-navy" {...rise(0.55)}>
-            {site.description}
-          </motion.p>
-          <motion.div className="mt-10 flex flex-col gap-3 sm:flex-row" {...rise(0.68)}>
+          {/* The LCP element: rises but is never transparent, so it paints on the first frame. */}
+          <p {...rise(0.3, "mt-7 max-w-[34rem] text-lead text-on-navy", "enter-slide")}>{site.description}</p>
+          <div {...rise(0.68, "mt-10 flex flex-col gap-3 sm:flex-row")}>
             <ButtonLink href="/services" size="lg">
               Explore Our Solutions
             </ButtonLink>
             <ButtonLink href="/contact?topic=project" size="lg" variant="inverse">
               Start a Project
             </ButtonLink>
-          </motion.div>
-          <motion.ul
+          </div>
+          <ul
             aria-label="What we do"
-            className="eyebrow mt-12 flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 pt-6 text-on-navy"
-            {...rise(0.8)}
+            {...rise(0.8, "eyebrow mt-12 flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 pt-6 text-on-navy")}
           >
             {services.map((s) => (
               <li key={s.slug} className="flex items-center gap-2">
@@ -78,7 +76,7 @@ export function Hero() {
                 {s.name}
               </li>
             ))}
-          </motion.ul>
+          </ul>
         </motion.div>
 
         <motion.div className="lg:col-span-6" style={{ y: visualY }}>

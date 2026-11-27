@@ -12,6 +12,7 @@ export function StudataVisual({ className }: { className?: string }) {
   return (
     <div aria-hidden className={cn("select-none [perspective:1400px]", className)}>
       <svg
+        aria-hidden
         viewBox="0 0 480 330"
         className="h-auto w-full overflow-visible transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:[transform:rotateX(5deg)_rotateY(7deg)_translateY(-6px)] motion-reduce:transition-none motion-reduce:group-hover:transform-none"
       >

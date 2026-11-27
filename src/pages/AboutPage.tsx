@@ -10,10 +10,12 @@ import { pageMetadata } from "@/lib/seo";
 import { Seo } from "@/components/layout/Seo";
 
 const metadata = pageMetadata({
-  title: "About",
+  title: "About NALIMAT Technology: Our Story, Mission & Vision",
   description:
-    "NALIMAT Technology is a technology-driven company focused on creating digital solutions that help businesses, entrepreneurs and institutions work smarter.",
+    "NALIMAT Technology is a technology-driven company building websites, mobile apps and software products that help businesses, entrepreneurs and institutions work smarter.",
   path: "/about",
+  crumb: "About",
+  pageType: "AboutPage",
 });
 
 export default function AboutPage() {

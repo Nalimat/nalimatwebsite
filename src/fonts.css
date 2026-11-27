@@ -5,6 +5,21 @@
  */
 @import "@fontsource-variable/inter";
 
+/*
+ * Metric-matched fallback: Arial scaled to Inter's proportions (the same
+ * overrides next/font generates), so text does not reflow when Inter loads.
+ * This removes the font-swap layout shift (CLS). The Latin Inter file is also
+ * preloaded in every page's <head> by scripts/prerender.mjs.
+ */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("ArialMT"), local("Helvetica");
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+  size-adjust: 107.12%;
+}
+
 :root {
-  --font-inter: "Inter Variable";
+  --font-inter: "Inter Variable", "Inter Fallback";
 }

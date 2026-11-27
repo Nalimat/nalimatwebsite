@@ -4,7 +4,7 @@
 //   dist/index.html, dist/<route>.html          one file per page (served at /<route>)
 //   dist/404.html                             served for unknown URLs (status 404)
 //   dist/sitemap.xml, dist/robots.txt         formerly src/app/sitemap.ts / robots.ts
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -17,6 +17,13 @@ if (!template.includes("<!--app-head-->") || !template.includes("<!--app-html-->
   throw new Error("prerender: dist/index.html is missing the <!--app-head--> / <!--app-html--> markers");
 }
 
+// Preload the Latin Inter font (the only subset English pages use) so text
+// renders in Inter on first paint more often. The file name is content-hashed.
+const latinFont = readdirSync(join(dist, "assets")).find((f) => /^inter-latin-wght-normal-.*\.woff2$/.test(f));
+const fontPreload = latinFont
+  ? `<link rel="preload" href="/assets/${latinFont}" as="font" type="font/woff2" crossorigin />`
+  : "";
+
 /** React 19 emits hoistable metadata first when rendering a fragment; split it off. */
 const HOISTED = /^(?:<title>[^<]*<\/title>|<meta\b[^>]*\/>|<link\b[^>]*\/>)+/;
 
@@ -24,7 +31,7 @@ function page(url) {
   const html = render(url);
   const head = html.match(HOISTED)?.[0] ?? "";
   if (!head.includes("<title>")) throw new Error(`prerender: no <title> rendered for ${url}`);
-  return template.replace("<!--app-head-->", head).replace("<!--app-html-->", html.slice(head.length));
+  return template.replace("<!--app-head-->", fontPreload + head).replace("<!--app-html-->", html.slice(head.length));
 }
 
 function write(file, contents) {
@@ -49,7 +56,8 @@ write(
     )
     .join("\n")}\n</urlset>\n`,
 );
-write(join(dist, "robots.txt"), `User-Agent: *\nAllow: /\n\nHost: ${site.url}\nSitemap: ${site.url}/sitemap.xml\n`);
+// /api/ only holds the contact form endpoint (POST); there is nothing there to index.
+write(join(dist, "robots.txt"), `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${site.url}/sitemap.xml\n`);
 
 // The SSR bundle is only needed at build time and for `vite preview`.
 rmSync(join(dist, ".vite"), { recursive: true, force: true });

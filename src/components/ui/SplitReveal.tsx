@@ -26,17 +26,35 @@ export function SplitReveal({
   stagger?: number;
 }) {
   const words = text.split(" ");
+
+  // On load: a CSS animation, so the heading starts revealing at first paint
+  // from the prerendered HTML rather than after hydration (see .split-mount).
+  if (mode === "mount") {
+    return (
+      <span>
+        {words.map((w, i) => (
+          <span key={i}>
+            <span className="inline-block overflow-hidden pb-[0.1em] -mb-[0.1em] align-bottom">
+              <span
+                className="split-word split-mount inline-block"
+                style={{ animationDelay: `${(delay + i * stagger).toFixed(3)}s` }}
+              >
+                {w}
+              </span>
+            </span>
+            {i < words.length - 1 ? " " : null}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
   const word: Variants = {
     hidden: { y: "110%" },
     show: (i: number) => ({ y: "0%", transition: { duration: 0.95, delay: delay + i * stagger, ease } }),
   };
-  const play =
-    mode === "mount"
-      ? { animate: "show" }
-      : { whileInView: "show", viewport: { once: true, margin: "0px 0px -8% 0px" } };
-
   return (
-    <motion.span initial="hidden" {...play}>
+    <motion.span initial="hidden" whileInView="show" viewport={{ once: true, margin: "0px 0px -8% 0px" }}>
       {words.map((w, i) => (
         <span key={i}>
           <span className="inline-block overflow-hidden pb-[0.1em] -mb-[0.1em] align-bottom">

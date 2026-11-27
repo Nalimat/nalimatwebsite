@@ -6,14 +6,16 @@ import { TechStack } from "@/components/sections/TechStack";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { ButtonLink } from "@/components/ui/Button";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, servicesJsonLd } from "@/lib/seo";
 import { Seo } from "@/components/layout/Seo";
 
 const metadata = pageMetadata({
-  title: "Services",
+  title: "Website, App & Software Development | NALIMAT Technology",
   description:
-    "Website development, mobile applications, business software and UI/UX & product design from NALIMAT Technology.",
+    "Website development, mobile app development, custom business software and UI/UX product design for small businesses, shops, startups and institutions.",
   path: "/services",
+  crumb: "Services",
+  jsonLd: [servicesJsonLd(services)],
 });
 
 export default function ServicesPage() {

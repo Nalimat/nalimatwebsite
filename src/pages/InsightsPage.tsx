@@ -10,9 +10,11 @@ import { pageMetadata } from "@/lib/seo";
 import { Seo } from "@/components/layout/Seo";
 
 const metadata = pageMetadata({
-  title: "Insights",
+  title: "Insights on Websites, Apps & Software | NALIMAT Technology",
   description: "Articles from the NALIMAT Technology team on websites, mobile applications, business software and product design.",
   path: "/insights",
+  crumb: "Insights",
+  pageType: "CollectionPage",
 });
 
 export default function InsightsPage() {

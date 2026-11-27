@@ -8,9 +8,10 @@ import { pageMetadata } from "@/lib/seo";
 import { Seo } from "@/components/layout/Seo";
 
 const metadata = pageMetadata({
-  title: "Products",
+  title: "Invoicy & Studata Software Products | NALIMAT Technology",
+  crumb: "Products",
   description:
-    "Invoicy, a quotation and invoice management application currently in development, and Studata, an upcoming student monitoring and management platform, from NALIMAT Technology.",
+    "Invoicy, a quotation and invoice management app in development, and Studata, an upcoming student monitoring and management platform for educational institutions.",
   path: "/products",
 });
 

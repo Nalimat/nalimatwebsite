@@ -1,6 +1,6 @@
 import { AppLink as Link } from "@/components/ui/AppLink";
 import { Seo } from "@/components/layout/Seo";
-import { defaultMetadata } from "@/lib/seo";
+import { homeMetadata } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { Hero } from "@/components/sections/home/Hero";
 import { Marquee } from "@/components/sections/home/Marquee";
@@ -50,7 +50,7 @@ const overviewLinks = [
 export default function HomePage() {
   return (
     <>
-      <Seo {...defaultMetadata()} />
+      <Seo {...homeMetadata()} />
       <Hero />
       <Marquee />
 
@@ -184,7 +184,7 @@ export default function HomePage() {
           intro="Small businesses, shops, startups, companies and educational institutions."
           action={
             <ButtonLink href="/industries" variant="secondary" className="self-start">
-              Learn more
+              More about who we work with
             </ButtonLink>
           }
         />

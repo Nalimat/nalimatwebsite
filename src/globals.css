@@ -428,6 +428,42 @@
   animation-play-state: paused;
 }
 
+/*
+ * Load-time entrances (hero, page headers) run in CSS, not JavaScript, so they
+ * start at first paint from the prerendered HTML instead of waiting for the
+ * bundle to download and hydrate (which delayed LCP by several seconds).
+ * Set the start time per element with style="animation-delay: …".
+ * - .split-mount: a heading word rising out of its clipping mask.
+ * - .enter-rise:  fade and rise, for supporting elements.
+ * - .enter-slide: rise only, never transparent, for the LCP text, so it counts
+ *                 as painted on the first frame.
+ */
+.split-mount {
+  animation: split-rise 0.95s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.enter-rise {
+  animation: enter-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.enter-slide {
+  animation: enter-slide 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes split-rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes enter-slide {
+  from {
+    transform: translateY(18px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
   [data-reveal] .timeline-line,
@@ -455,9 +491,13 @@
     opacity: 0;
   }
 
-  /* Word-by-word headings: every word shown in place. */
-  .split-word {
+  /* Word-by-word headings and load-time entrances: shown in place. */
+  .split-word,
+  .enter-rise,
+  .enter-slide {
     transform: none !important;
+    opacity: 1 !important;
+    animation: none !important;
   }
 
   .btn-sheen::after {

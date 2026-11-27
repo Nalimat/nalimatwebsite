@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { products } from "@/content/products";
 import { cn } from "@/lib/cn";
+import { trackEvent } from "@/lib/analytics";
 
 const fieldOrder: (keyof ContactInput)[] = ["name", "email", "company", "phone", "topic", "message", "consent"];
 
@@ -50,6 +51,14 @@ export function ContactForm() {
       setTouched({});
     }
   }
+
+  // GA4 conversion: only the enquiry topic is sent, never the visitor's details.
+  useEffect(() => {
+    if (state.status === "success") trackEvent("generate_lead", { form_name: "contact", enquiry_topic: values.topic });
+    else if (state.status === "error") trackEvent("contact_form_error", { form_name: "contact" });
+    // Fire once per submission result, not when the topic changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   useEffect(() => {
     if (state.status === "success" || state.status === "error") statusRef.current?.focus();

@@ -9,10 +9,11 @@ import { pageMetadata } from "@/lib/seo";
 import { Seo } from "@/components/layout/Seo";
 
 const metadata = pageMetadata({
-  title: "Careers",
+  title: "Careers at NALIMAT Technology: Design & Engineering",
   description:
-    "Join NALIMAT Technology and work on our own software products and client projects across design and engineering.",
+    "Join NALIMAT Technology and work on our own software products and client projects across design and engineering. See how we work and how we hire.",
   path: "/careers",
+  crumb: "Careers",
 });
 
 export default function CareersPage() {

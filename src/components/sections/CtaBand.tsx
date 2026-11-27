@@ -29,7 +29,7 @@ export function CtaBand({
               className="absolute inset-0"
               style={{ background: "radial-gradient(30rem 22rem at 88% 50%, rgb(240 96 32 / 0.22), transparent 70%)" }}
             />
-            <svg viewBox="0 0 400 400" className="absolute top-1/2 -right-24 hidden w-[30rem] -translate-y-1/2 lg:block">
+            <svg aria-hidden viewBox="0 0 400 400" className="absolute top-1/2 -right-24 hidden w-[30rem] -translate-y-1/2 lg:block">
               <circle cx="200" cy="200" r="190" fill="none" stroke="#fff" strokeOpacity="0.07" />
               <circle cx="200" cy="200" r="140" fill="none" stroke="#F06020" strokeOpacity="0.4" strokeDasharray="2 7" />
               <circle cx="200" cy="200" r="90" fill="none" stroke="#fff" strokeOpacity="0.08" />

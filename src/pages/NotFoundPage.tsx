@@ -1,13 +1,13 @@
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { Seo } from "@/components/layout/Seo";
-import { defaultMetadata } from "@/lib/seo";
+import { notFoundMetadata } from "@/lib/seo";
 
 /** 404 page (formerly src/app/not-found.tsx). `title` mirrors Next.js generateMetadata, e.g. "Article not found". */
 export default function NotFoundPage({ title = "Page not found" }: { title?: string }) {
   return (
     <>
-      <Seo {...defaultMetadata({ title, noindex: true })} />
+      <Seo {...notFoundMetadata(title)} />
       <Container className="flex min-h-[60vh] flex-col items-start justify-center py-24">
         <p className="text-sm font-medium text-accent-ink">404</p>
         <h1 className="mt-4 text-h1">This page does not exist</h1>

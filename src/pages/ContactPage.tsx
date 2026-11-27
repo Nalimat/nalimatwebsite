@@ -8,10 +8,12 @@ import { pageMetadata } from "@/lib/seo";
 import { Seo } from "@/components/layout/Seo";
 
 const metadata = pageMetadata({
-  title: "Contact",
+  title: "Contact NALIMAT Technology: Start Your Website or App Project",
   description:
-    "Have an idea? Let's build it. Contact NALIMAT Technology about a website, an application or a digital solution for your business.",
+    "Have an idea? Let's build it. Contact NALIMAT Technology about a website, a mobile application, business software or a product demo.",
   path: "/contact",
+  crumb: "Contact",
+  pageType: "ContactPage",
 });
 
 export default function ContactPage() {

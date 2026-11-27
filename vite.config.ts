@@ -86,8 +86,33 @@ function contactApi(): Plugin {
   };
 }
 
+/**
+ * Google Search Console HTML-tag verification. Set GOOGLE_SITE_VERIFICATION to
+ * the `content` value of the tag Search Console gives you (not the whole tag).
+ * It is read at build time from the environment (or a local .env file), so the
+ * token is never committed to the repository. Leave it empty when the site is
+ * verified with a DNS TXT record instead (recommended: a Domain property).
+ */
+function siteVerification(): Plugin {
+  let token = "";
+  return {
+    name: "nalimat-site-verification",
+    config(_, { mode }) {
+      const env = loadEnv(mode, process.cwd(), "");
+      token = (process.env.GOOGLE_SITE_VERIFICATION ?? env.GOOGLE_SITE_VERIFICATION ?? "").trim();
+      if (token && !/^[A-Za-z0-9_-]{10,100}$/.test(token)) {
+        throw new Error("GOOGLE_SITE_VERIFICATION must be only the content value of the Search Console meta tag.");
+      }
+    },
+    transformIndexHtml(html) {
+      const tag = token ? `<meta name="google-site-verification" content="${token}" />` : "";
+      return html.replace("<!--site-verification-->", tag);
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(), contactApi()],
+  plugins: [react(), tailwindcss(), contactApi(), siteVerification()],
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },

@@ -7,10 +7,11 @@ import { pageMetadata } from "@/lib/seo";
 import { Seo } from "@/components/layout/Seo";
 
 const metadata = pageMetadata({
-  title: "Who We Work With",
+  title: "Shops, Small Businesses & Schools | NALIMAT Technology",
   description:
-    "NALIMAT Technology works with retail shops and stores, small businesses, growing companies, and schools and educational institutions.",
+    "Websites, billing tools, custom software and education technology for retail shops, small businesses, growing companies and educational institutions.",
   path: "/industries",
+  crumb: "Who we work with",
 });
 
 export default function IndustriesPage() {
