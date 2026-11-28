@@ -19,6 +19,7 @@ export function Section({
   containerClassName,
   labelledBy,
   reveal = true,
+  backdrop,
   children,
 }: {
   id?: string;
@@ -28,6 +29,8 @@ export function Section({
   labelledBy?: string;
   /** Fade and rise the content in once on first view (on by default; see SectionReveal). */
   reveal?: boolean;
+  /** Decorative layer behind the content (e.g. a photograph); replaces the navy stage backdrop. */
+  backdrop?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
@@ -36,7 +39,7 @@ export function Section({
       aria-labelledby={labelledBy}
       className={cn("py-20 sm:py-24 lg:py-28", tones[tone], className)}
     >
-      {tone === "navy" && <StageBackdrop />}
+      {backdrop ?? (tone === "navy" && <StageBackdrop />)}
       <Container className={containerClassName}>{reveal ? <div data-reveal="">{children}</div> : children}</Container>
     </section>
   );

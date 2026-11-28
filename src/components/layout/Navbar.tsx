@@ -7,14 +7,16 @@ import { mainNav } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { Logo } from "./Logo";
+import { LogoBadge } from "./Logo";
 
 function isActive(pathname: string, href: string) {
   return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 }
 
 /**
- * Site header: a navy bar that joins the navy hero and page headers.
+ * Site header: a round logo badge on the left, links and a rounded Contact
+ * button on the right. On the homepage it floats transparent over the hero
+ * photograph; elsewhere it is a sticky navy bar joining the page headers.
  * Links get an orange underline that grows on hover; the active page's
  * underline slides between items on navigation.
  */
@@ -60,16 +62,19 @@ export function Navbar() {
       <span ref={topSentinel} aria-hidden className="pointer-events-none absolute top-2 left-0 h-px w-px" />
       <header
         className={cn(
-          "stage-dark top-0 z-50 border-b bg-navy text-white transition-[border-color,box-shadow] duration-300",
-          isHome ? "relative" : "sticky",
+          "stage-dark top-0 z-50 border-b text-white transition-[border-color,box-shadow,background-color] duration-300",
+          isHome
+            ? cn("absolute inset-x-0 [text-shadow:0_1px_2px_rgb(0_0_0/0.4)]", open ? "bg-navy" : "bg-transparent")
+            : "sticky bg-navy",
           (scrolled && !isHome) || open
             ? "border-white/10 shadow-[0_10px_30px_-18px_rgb(5_14_25/0.9)]"
             : "border-transparent",
         )}
       >
-        <Container className="flex h-[72px] items-center justify-between gap-6">
-          <Logo tone="light" />
+        <Container className="flex h-[88px] items-center justify-between gap-6">
+          <LogoBadge />
 
+          <div className="flex items-center gap-4 lg:gap-6">
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex items-center gap-1">
               {mainNav.map((item) => {
@@ -80,8 +85,8 @@ export function Navbar() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "group relative block rounded-md px-3.5 py-2 text-[0.9375rem] font-medium transition-colors",
-                        active ? "text-white" : "text-on-navy hover:text-white",
+                        "group relative block rounded-md px-3 py-2 text-[0.9375rem] font-semibold transition-colors",
+                        active ? "text-white" : "text-white/80 hover:text-white",
                       )}
                     >
                       {item.label}
@@ -89,13 +94,13 @@ export function Navbar() {
                         <motion.span
                           layoutId="nav-active"
                           aria-hidden
-                          className="absolute inset-x-3.5 -bottom-[17px] h-0.5 rounded-full bg-accent"
+                          className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-accent"
                           transition={{ type: "spring", stiffness: 420, damping: 36 }}
                         />
                       ) : (
                         <span
                           aria-hidden
-                          className="absolute inset-x-3.5 -bottom-[17px] h-0.5 origin-left scale-x-0 rounded-full bg-white/40 transition-transform duration-300 ease-out group-hover:scale-x-100 motion-reduce:transition-none"
+                          className="absolute inset-x-3 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-white/40 transition-transform duration-300 ease-out group-hover:scale-x-100 motion-reduce:transition-none"
                         />
                       )}
                     </Link>
@@ -107,7 +112,9 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <div className="hidden sm:block">
-              <ButtonLink href="/contact">Contact us</ButtonLink>
+              <ButtonLink href="/contact" variant="inverse" className="rounded-full! border-white/70 px-6 backdrop-blur-sm hover:border-white">
+                Contact us
+              </ButtonLink>
             </div>
             <button
               type="button"
@@ -120,6 +127,7 @@ export function Navbar() {
               {open ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
+          </div>
         </Container>
 
         <AnimatePresence>
@@ -130,7 +138,7 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute inset-x-0 top-[72px] h-[calc(100dvh-72px)] overflow-y-auto border-t border-white/10 bg-navy lg:hidden"
+              className="absolute inset-x-0 top-[88px] h-[calc(100dvh-88px)] overflow-y-auto border-t border-white/10 bg-navy lg:hidden"
             >
               <div aria-hidden className="grid-lines pointer-events-none absolute inset-0 opacity-60" />
               <Container as="nav" className="relative py-6">

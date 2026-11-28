@@ -98,10 +98,36 @@ export default function HomePage() {
       </Section>
 
       {/* Products: navy showcase stage */}
-      <Section id="products" tone="navy" labelledBy="products-title">
+      <Section
+        id="products"
+        tone="navy"
+        labelledBy="products-title"
+        backdrop={
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] sm:h-[40rem] lg:h-[46rem]">
+            <img
+              src="/images/products-puzzle-1536.webp"
+              srcSet="/images/products-puzzle-640.webp 640w, /images/products-puzzle-1024.webp 1024w, /images/products-puzzle-1536.webp 1536w"
+              sizes="100vw"
+              alt=""
+              width={1536}
+              height={1024}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
+            />
+            {/* Navy washes: the white shirt is bright, so the frame is dimmed (most behind the
+                heading on the left), then fades fully into navy before the product cards. */}
+            <div className="absolute inset-0 bg-navy/35 lg:hidden" />
+            <div className="absolute inset-0 hidden lg:block bg-gradient-to-r from-navy/45 via-transparent via-40% to-navy/35" />
+            <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-navy/50 via-navy/15 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-navy via-navy/50 to-transparent" />
+          </div>
+        }
+      >
         <SectionHeading
           id="products-title"
           tone="dark"
+          className="[text-shadow:0_1px_3px_rgb(0_0_0/0.6),0_4px_28px_rgb(0_0_0/0.55)] [&_.eyebrow]:text-white"
           eyebrow="Our products"
           title="Solutions Designed to Solve Real Problems."
           intro="We develop digital products that make everyday tasks simpler, more organized and more efficient."
